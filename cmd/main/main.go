@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"expressionlng/pkg/token"
+	"expressionlng/src/token"
 )
 
 func main() {
@@ -14,7 +14,7 @@ func main() {
 	}
 
 	for i, t := range stack.Tokens {
-		fmt.Printf("index: %d, value: '%s' Text: '%s'\n", i, string(t.GetVal()), string(t.GetText()))
+		fmt.Printf("index: %d, type: %d value: '%s' Text: '%s'\n", i, t.GetType(), string(t.GetVal()))
 	}
 	fmt.Println()
 	fmt.Printf("index: %d", '/')

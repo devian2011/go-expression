@@ -2,12 +2,13 @@ package token
 
 import (
 	"bufio"
-	"expressionlng/pkg/manage"
 	"io"
 	"os"
+
+	"expressionlng/src/manage"
 )
 
-var sMap = map[rune]int{
+var sMap = map[rune]uint8{
 	32:  manage.WhiteSpace,
 	33:  manage.Not,
 	34:  manage.DoubleQuote,
@@ -33,17 +34,16 @@ var sMap = map[rune]int{
 }
 
 type Token struct {
-	tType int
-	val   rune
-	text  []rune
+	tType uint8
+	val   []rune
 }
 
-func (t *Token) GetVal() rune {
+func (t *Token) GetType() uint8 {
+	return t.tType
+}
+
+func (t *Token) GetVal() []rune {
 	return t.val
-}
-
-func (t *Token) GetText() []rune {
-	return t.text
 }
 
 func (t *Token) IsManagedSymbol() bool {
@@ -51,7 +51,7 @@ func (t *Token) IsManagedSymbol() bool {
 }
 
 func (t *Token) NotEmpty() bool {
-	return len(t.text) > 0 || t.val > 0
+	return len(t.val) > 0
 }
 
 type Reader interface {
@@ -128,13 +128,12 @@ func Parse(reader Reader) (*Stack, error) {
 
 		if code, exists := sMap[rn]; exists {
 			stack.closeNotEmptyToken()
-			stack.current().val = rn
 			stack.current().tType = code
 			stack.currentClose()
 			continue
 		}
 
-		stack.current().text = append(stack.current().text, rn)
+		stack.current().val = append(stack.current().val, rn)
 	}
 
 	if stack.current().NotEmpty() {
