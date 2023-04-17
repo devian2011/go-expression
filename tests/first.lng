@@ -1,0 +1,4 @@
+fn HelloWorld(var1, var2) {
+    console.out("It's print hello world");
+}
+HelloWorld();
